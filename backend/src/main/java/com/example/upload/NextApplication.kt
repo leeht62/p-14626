@@ -10,6 +10,7 @@ class NextApplication
 
 fun main(args: Array<String>) {
 
+    
     SpringApplication.run(NextApplication::class.java, *args)
 }
 
