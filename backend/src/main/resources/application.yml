@@ -1,0 +1,95 @@
+server:
+  port: 8080
+  shutdown: graceful
+  tomcat:
+    max-swallow-size: 1GB
+    max-http-form-post-size: 1GB
+
+spring:
+  output:
+    ansi:
+      enabled: always
+
+  profiles:
+    active: dev
+    include: secret
+
+  servlet:
+    multipart:
+      max-request-size: 5MB
+      max-file-size: ${spring.servlet.multipart.max-request-size}
+
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+
+  datasource:
+    url: jdbc:h2:./db_dev;MODE=MySQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+    hikari:
+      auto-commit: false
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+        use_sql_comments: true
+        default_batch_fetch_size: 100
+
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: 65978e546b544ac812105a69308b73c1
+            client-secret: jMSX86TcfBX8zQQln6jkYZ3HfIQkZbKg
+            client-authentication-method: client_secret_post
+            scope: profile_nickname, profile_image
+            client-name: Kakao
+            authorization-grant-type: authorization_code
+            redirect-uri: "${custom.site.backUrl}/login/oauth2/code/kakao"
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.hibernate.orm.jdbc.extract: TRACE
+    org.springframework.transaction.interceptor: TRACE
+
+springdoc:
+  default-produces-media-type: application/json;charset=UTF-8
+
+
+custom:
+  prod:
+    domain: devcourse-testing.shop
+    backUrl: "https://api.${custom.prod.domain}"
+    frontUrl: "https://www.${custom.prod.domain}"
+
+  dev:
+    domain: devcourse-testing.shop
+    backUrl: "http://${custom.dev.domain}:${server.port}"
+    frontUrl: "http://${custom.dev.domain}:3000"
+
+  site:
+    domain: "${custom.prod.domain}"
+    backUrl: "${custom.prod.backUrl}"
+    frontUrl: "${custom.prod.frontUrl}"
+
+  jwt:
+    expire-seconds: "#{60 * 30}"
+  genFile:
+    dirPath: c:/temp/glog_dev
