@@ -194,7 +194,7 @@ jobs:
             LOGIN_CODE=$(curl -sk -o /dev/null -w "%{http_code}" -c "$COOKIE_JAR" \
               -X POST "$NPM_BASE_URL/api/tokens" \
               -H "Content-Type: application/json" \
-              -d "$(jq -nc --arg id "admin@npm.com" --arg pw "${PASSWORD_1:-}" '{identity:$id, secret:$pw}')")
+              -d "$(jq -nc --arg id "zdfxd3611s@gmail.com" --arg pw "${PASSWORD_1:-}" '{identity:$id, secret:$pw}')")
           
             [[ "$LOGIN_CODE" == "200" ]] || {
               echo "NPMplus login failed. HTTP=$LOGIN_CODE"
