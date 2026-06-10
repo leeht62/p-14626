@@ -32,7 +32,7 @@ class ApiV1MemberController(
         @field:NotBlank val password: String,
         @field:NotBlank val nickname: String
     )
-    
+
 
     @Operation(summary = "회원 가입")
     @PostMapping(value = ["/join"], produces = ["application/json;charset=UTF-8"])
