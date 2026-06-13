@@ -42,6 +42,19 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="workflows" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="workflows" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="d483d51a-14c1-4783-85d5-22f47b30159d" name="Changes" comment="" />
@@ -50,7 +63,8 @@
       <option name="presentableId" value="Default" />
       <updated>1780316133551</updated>
       <workItem from="1780316134607" duration="771000" />
-      <workItem from="1781090779611" duration="5546000" />
+      <workItem from="1781090779611" duration="10227000" />
+      <workItem from="1781147012687" duration="5254000" />
     </task>
     <servers />
   </component>

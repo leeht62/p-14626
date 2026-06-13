@@ -79,6 +79,7 @@ class AppConfig {
     fun setSiteBackUrl(siteBackUrl: String) {
         Companion.siteBackUrl = siteBackUrl
     }
+    
 
     @Value("\${custom.site.frontUrl}")
     fun setSiteFrontUrl(siteFrontUrl: String) {
