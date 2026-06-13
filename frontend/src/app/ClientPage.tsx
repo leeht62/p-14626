@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { LoginMemberContext } from "@/stores/auth/loginMemberStore";
 import { use } from "react";
-
+  // redeploy test
 export default function Page() {
   const { isLogin, loginMember } = use(LoginMemberContext);
 
