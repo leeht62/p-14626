@@ -191,20 +191,22 @@ jobs:
             # NPMplus 로그인
             COOKIE_JAR="/tmp/npm_cookies.txt"
           
-            LOGIN_CODE=$(curl -sk -o /dev/null -w "%{http_code}" -c "$COOKIE_JAR" \
+           # NPMplus 로그인
+              TOKEN=$(curl -sk \
               -X POST "$NPM_BASE_URL/api/tokens" \
-              -H "Content-Type: application/json" \
-              -d "$(jq -nc --arg id "zdfxd3611s@gmail.com" --arg pw "${PASSWORD_1:-}" '{identity:$id, secret:$pw}')")
-          
-            [[ "$LOGIN_CODE" == "200" ]] || {
-              echo "NPMplus login failed. HTTP=$LOGIN_CODE"
+            -H "Content-Type: application/json" \
+              -d "$(jq -nc --arg id "zdfxd3611s@gmail.com" --arg pw "${PASSWORD_1:-}" '{identity:$id, secret:$pw}')" \
+              | jq -r '.token')
+              
+              [[ -n "$TOKEN" && "$TOKEN" != "null" ]] || {
+              echo "NPMplus login failed. token is empty"
               exit 1
             }
-          
-            echo "NPMplus login success"
+              
+              echo "NPMplus login success"
           
             # APP_1_DOMAIN에 해당하는 proxy host 찾기
-            PROXY_ID=$(curl -sk -b "$COOKIE_JAR" \
+            PROXY_ID=$(curl -sk -H "Authorization: Bearer $TOKEN" \
               "$NPM_BASE_URL/api/nginx/proxy-hosts" \
               | jq ".[] | select(.domain_names[]==\"${APP_1_DOMAIN}\") | .id" \
               | head -n 1)
@@ -213,7 +215,7 @@ jobs:
             if [[ -z "$PROXY_ID" || "$PROXY_ID" == "null" ]]; then
               echo "Proxy host not found for $APP_1_DOMAIN. Creating..."
           
-              PROXY_ID=$(curl -sk -b "$COOKIE_JAR" \
+              PROXY_ID=$(curl -sk -H "Authorization: Bearer $TOKEN" \
                 -X POST "$NPM_BASE_URL/api/nginx/proxy-hosts" \
                 -H "Content-Type: application/json" \
                 -d "$(jq -nc \
@@ -259,7 +261,7 @@ jobs:
             fi
           
             # 현재 NPMplus가 바라보는 컨테이너 확인
-            CURRENT_HOST=$(curl -sk -b "$COOKIE_JAR" \
+            CURRENT_HOST=$(curl -sk -H "Authorization: Bearer $TOKEN" \
               "$NPM_BASE_URL/api/nginx/proxy-hosts/$PROXY_ID" \
               | jq -r '.forward_host')
           
@@ -330,7 +332,7 @@ jobs:
             # NPMplus 프록시 전환
             echo "Switching NPMplus upstream to $GREEN:$PORT_IN"
           
-            CURRENT_CFG=$(curl -sk -b "$COOKIE_JAR" \
+            CURRENT_CFG=$(curl -sk -H "Authorization: Bearer $TOKEN" \
               "$NPM_BASE_URL/api/nginx/proxy-hosts/$PROXY_ID")
           
             NEW_CFG=$(echo "$CURRENT_CFG" | jq \
@@ -373,7 +375,7 @@ jobs:
                 trust_forwarded_proto
               }')
           
-            SWITCH_CODE=$(curl -sk -b "$COOKIE_JAR" \
+            SWITCH_CODE=$(curl -sk -H "Authorization: Bearer $TOKEN" \
               -o /dev/null \
               -w "%{http_code}" \
               -X PUT "$NPM_BASE_URL/api/nginx/proxy-hosts/$PROXY_ID" \
