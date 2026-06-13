@@ -12,8 +12,7 @@ export default function Page() {
         <div className="flex flex-grow justify-center items-center">
           <Button>
             <a
-              href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/oauth2/authorization/kakao?redirectUrl=${process.env.NEXT_PUBLIC_API_FRONT_URL}`}
-            >
+              href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/oauth2/authorization/kakao?redirectUrl=${process.env.NEXT_PUBLIC_FRONT_BASE_URL}`}
               카카오 로그인
             </a>
           </Button>
