@@ -13,6 +13,7 @@ export default function Page() {
           <Button>
             <a
               href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/oauth2/authorization/kakao?redirectUrl=${process.env.NEXT_PUBLIC_FRONT_BASE_URL}`}
+            >
               카카오 로그인
             </a>
           </Button>
