@@ -337,44 +337,26 @@ jobs:
               "$NPM_BASE_URL/api/nginx/proxy-hosts/$PROXY_ID")
           
             NEW_CFG=$(echo "$CURRENT_CFG" | jq \
-              --arg host "$GREEN" \
-              --argjson port "$PORT_IN" \
-              '{
-                access_list_id,
-                advanced_config,
-                allow_websocket_upgrade,
-                block_exploits,
-                caching_enabled,
-                certificate_id,
-                domain_names,
-                forward_host: $host,
-                forward_port: $port,
-                forward_scheme,
-                hsts_enabled,
-                hsts_subdomains,
-                http2_support,
-                locations: [
-                  {
-                    path: "/sse/",
-                    forward_scheme: "http",
-                    forward_host: $host,
-                    forward_port: $port,
-                    npmplus_proxy_response_buffering: true
-                  }
-                ],
-                meta,
-                npmplus_auth_request,
-                npmplus_crowdsec_appsec,
-                npmplus_fancyindex,
-                npmplus_http3_support,
-                npmplus_noindex,
-                npmplus_proxy_request_buffering,
-                npmplus_proxy_response_buffering,
-                npmplus_upstream_compression,
-                npmplus_x_frame_options,
-                ssl_forced,
-                trust_forwarded_proto
-              }')
+            --arg host "$GREEN" \
+            --argjson port "$PORT_IN" \
+            '{
+              domain_names,
+              forward_scheme,
+              forward_host: $host,
+              forward_port: $port,
+              access_list_id,
+              certificate_id,
+              ssl_forced,
+              caching_enabled,
+              block_exploits,
+              advanced_config,
+              allow_websocket_upgrade,
+              http2_support,
+              hsts_enabled,
+              hsts_subdomains,
+              meta,
+              locations
+            }')
           
             SWITCH_CODE=$(curl -sk -H "Authorization: Bearer $TOKEN" \
               -o /dev/null \
